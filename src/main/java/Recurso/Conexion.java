@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 public class Conexion {
 
     String bd = "bdsistemacitas";
-    String url = "jdbc:mysql://localhost:3305/";
+    String url = "jdbc:mysql://localhost:3306/";
     String user = "root";
     String password = "1234";
     String driver = "com.mysql.cj.jdbc.Driver";

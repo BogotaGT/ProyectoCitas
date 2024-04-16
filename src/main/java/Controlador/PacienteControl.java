@@ -3,6 +3,7 @@ package Controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import Modelo.GestorPaciente;
 import Modelo.Paciente;
@@ -12,12 +13,16 @@ public class PacienteControl implements ActionListener {
     RegPacienteInternalFrame pacienteVista;
     Paciente pacienteModelo;
     GestorPaciente gestorPacienteModelo;
+    SimpleDateFormat formatoEntrada;
+    SimpleDateFormat formatoSalida;
 
     public PacienteControl(RegPacienteInternalFrame pacienteVista) {
         this.pacienteVista = pacienteVista;
         this.gestorPacienteModelo = new GestorPaciente();
         this.pacienteVista.Nuevo.addActionListener(this); // Agregar listener al botón "Nuevo"
         this.pacienteVista.Registrar.addActionListener(this); // Agregar listener al botón "Registrar"
+        this.formatoEntrada = new SimpleDateFormat("dd-MM-yyyy");
+        this.formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
     }
 
     @Override
@@ -45,8 +50,16 @@ public class PacienteControl implements ActionListener {
         String identificacion = pacienteVista.txt_identificacion.getText();
         String nombres = pacienteVista.txt_nombres.getText();
         String apellidos = pacienteVista.txt_apellidos.getText();
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        String fecha_nacimiento = formato.format(pacienteVista.Dtd_fecha_nacimiento.getDate());
+        String fecha_nacimiento = "";
+       
+        try {
+            Date fecha = pacienteVista.Dtd_fecha_nacimiento.getDate();
+            fecha_nacimiento = formatoSalida.format(fecha);
+        } catch (Exception ex) {
+            // Manejar la excepción si la fecha de nacimiento es nula o no se puede formatear
+            ex.printStackTrace();
+        }
+
         String genero = "";
         if (pacienteVista.rdb_masculino.isSelected()) {
             genero = "M";
