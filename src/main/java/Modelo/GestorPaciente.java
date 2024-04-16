@@ -16,16 +16,14 @@ public class GestorPaciente {
 
     public void registrarPaciente(Paciente paciente) {
     try {
-        String query = "INSERT INTO pacientes (pacIdentificacion, pacNombres, pacApellidos, pacFechaNacimiento,pacGenero, pacTelefono, pacDireccion) "
-                     + "VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO pacientes (pacIdentificacion, pacNombres, pacApellidos, pacFechaNacimiento, pacGenero) "
+                     + "VALUES (?, ?, ?, ?, ?)"; // Ajustado para incluir los 5 parámetros
         PreparedStatement pst = conn.getConnection().prepareStatement(query);
         pst.setString(1, paciente.getIdentificacion());
         pst.setString(2, paciente.getNombres());
         pst.setString(3, paciente.getApellidos());
         pst.setString(4, paciente.getFechaNacimiento());
-        pst.setString(5, paciente.getGenero());  // Cambiado a genero
-        pst.setString(6, paciente.getTelefono()); 
-        pst.setString(7, paciente.getDireccion());
+        pst.setString(5, paciente.getGenero());
         pst.executeUpdate();
         JOptionPane.showMessageDialog(null, "Paciente Registrado");
         pst.close();

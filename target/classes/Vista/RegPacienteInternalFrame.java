@@ -3,38 +3,43 @@ package Vista;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField; // Se agregó la importación de JTextField
-import Modelo.GestorPaciente;
-import Modelo.Paciente;
-import com.toedter.calendar.JDateChooser;
+import java.text.SimpleDateFormat;
 
 public class RegPacienteInternalFrame extends javax.swing.JInternalFrame implements ActionListener {
 
-    GestorPaciente gestorPaciente;
-       public JTextField txt_telefono;
-       public JTextField txt_direccion;
-
     public RegPacienteInternalFrame() {
         initComponents();
-        gestorPaciente = new GestorPaciente(); // Inicializar el gestor de pacientes
-        Registrar.addActionListener(this); // Agregar listener al botón Registrar
-
-        txt_telefono = new JTextField();
-        txt_direccion = new JTextField();
-        
-       
+        // Agregar listeners a los botones
+        Nuevo.addActionListener(this);
+        Registrar.addActionListener(this);
     }
 
+    // Método actionPerformed para manejar eventos de acción
     @Override
-           public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == Registrar) {
-            // Obtener datos del formulario  
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == Nuevo) {
+            // Limpiar todos los campos del formulario
+            txt_identificacion.setText("");
+            txt_nombres.setText("");
+            txt_apellidos.setText("");
+            Dtd_fecha_nacimiento.setDate(null);
+            rdb_masculino.setSelected(true);
+            rdb_femenino.setSelected(false);
+            rdb_otro.setSelected(false);
+        } else if (e.getSource() == Registrar) {
+            // Validar y registrar al paciente
             String identificacion = txt_identificacion.getText();
             String nombres = txt_nombres.getText();
             String apellidos = txt_apellidos.getText();
-             String fechaNacimiento = ((JTextField) Dtd_fecha_nacimiento.getDateEditor().getUiComponent()).getText();
-            String telefono = txt_telefono.getText(); // Se corrigió el nombre del campo de teléfono
-            String direccion = txt_direccion.getText();
+            // Validar que no falten datos obligatorios
+            if (identificacion.isEmpty() || nombres.isEmpty() || apellidos.isEmpty() || Dtd_fecha_nacimiento.getDate() == null) {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+                return;
+            }
+            // Obtener la fecha de nacimiento en el formato deseado
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            String fecha_nacimiento = formato.format(Dtd_fecha_nacimiento.getDate());
+            // Obtener el género seleccionado
             String genero = "";
             if (rdb_masculino.isSelected()) {
                 genero = "Masculino";
@@ -43,17 +48,13 @@ public class RegPacienteInternalFrame extends javax.swing.JInternalFrame impleme
             } else if (rdb_otro.isSelected()) {
                 genero = "Otro";
             }
-
-            // Crear objeto Paciente
-            Paciente paciente = new Paciente(identificacion, nombres, apellidos, fechaNacimiento, genero, telefono, direccion);
-
-            // Registrar paciente
-            gestorPaciente.registrarPaciente(paciente);
+            // Aquí puedes agregar la lógica para registrar al paciente en la base de datos
+            // Por ahora, mostraremos un mensaje de confirmación
             JOptionPane.showMessageDialog(this, "Paciente registrado correctamente.");
+            // También podrías llamar a un método en el controlador para manejar el registro del paciente
+            // controlador.registrarPaciente(identificacion, nombres, apellidos, fecha_nacimiento, genero);
         }
-}
-        
-    
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
