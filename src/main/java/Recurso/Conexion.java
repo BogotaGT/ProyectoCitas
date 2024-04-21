@@ -10,17 +10,18 @@ import javax.swing.JOptionPane;
 
 public class Conexion {
 
+    String servidor = "jdbc:mysql://localhost:3306/";
     String bd = "bdsistemacitas";
-    String url = "jdbc:mysql://localhost:3306/";
     String user = "root";
-    String password = "1234";
-    String driver = "com.mysql.cj.jdbc.Driver";
+    String password = "";
+    
     Connection cx;
 
     public Conexion() {
         try {
+            String driver = "com.mysql.cj.jdbc.Driver"; // Definir el controlador JDBC
             Class.forName(driver);
-            cx = DriverManager.getConnection(url + bd, user, password);
+            cx = DriverManager.getConnection(servidor + bd + "?serverTimezone=UTC", user, password);
             System.out.println("SE CONECTO A BD " + bd);
         } catch (ClassNotFoundException | SQLException ex) {
             System.out.println("NO SE CONECTO A BD " + bd);
@@ -36,7 +37,7 @@ public class Conexion {
         try {
             cx.close();
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
@@ -57,4 +58,3 @@ public class Conexion {
        }
    }
 }
-

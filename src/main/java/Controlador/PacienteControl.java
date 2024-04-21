@@ -19,8 +19,8 @@ public class PacienteControl implements ActionListener {
     public PacienteControl(RegPacienteInternalFrame pacienteVista) {
         this.pacienteVista = pacienteVista;
         this.gestorPacienteModelo = new GestorPaciente();
-        this.pacienteVista.Nuevo.addActionListener(this); // Agregar listener al botón "Nuevo"
         this.pacienteVista.Registrar.addActionListener(this); // Agregar listener al botón "Registrar"
+        this.pacienteVista.Nuevo.addActionListener(this);
         this.formatoEntrada = new SimpleDateFormat("dd-MM-yyyy");
         this.formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
     }
@@ -54,7 +54,9 @@ public class PacienteControl implements ActionListener {
        
         try {
             Date fecha = pacienteVista.Dtd_fecha_nacimiento.getDate();
-            fecha_nacimiento = formatoSalida.format(fecha);
+            // Formatear la fecha al formato de la base de datos
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            fecha_nacimiento = sdf.format(fecha);
         } catch (Exception ex) {
             // Manejar la excepción si la fecha de nacimiento es nula o no se puede formatear
             ex.printStackTrace();

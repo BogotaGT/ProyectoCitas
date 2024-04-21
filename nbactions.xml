@@ -51,7 +51,7 @@
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>${packageClassName}</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.workingdir>C:\Users\juans\OneDrive\Documentos\NetBeansProjects\ProyectoCitas</exec.workingdir>
+               <exec.workingdir>C:\xampp\htdocs\ProyectoCitas</exec.workingdir>
                 <exec.appArgs>Citas</exec.appArgs>
             </properties>
         </action>
