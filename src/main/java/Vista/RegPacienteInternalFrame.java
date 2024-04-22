@@ -18,6 +18,7 @@ public class RegPacienteInternalFrame extends javax.swing.JInternalFrame impleme
         initComponents();
         gestorPaciente = new GestorPaciente(); // Inicializar el gestor de pacientes
         Registrar.addActionListener(this); // Agregar listener al botón Registrar
+        Nuevo.addActionListener(this);
 
         txt_telefono = new JTextField();
         txt_direccion = new JTextField();
@@ -42,7 +43,7 @@ public class RegPacienteInternalFrame extends javax.swing.JInternalFrame impleme
                 genero = "Femenino";
             } else if (rdb_otro.isSelected()) {
                 genero = "Otro";
-            }
+            }          
 
             // Crear objeto Paciente
             Paciente paciente = new Paciente(identificacion, nombres, apellidos, fechaNacimiento, genero, telefono, direccion);
@@ -50,6 +51,17 @@ public class RegPacienteInternalFrame extends javax.swing.JInternalFrame impleme
             // Registrar paciente
             gestorPaciente.registrarPaciente(paciente);
             JOptionPane.showMessageDialog(this, "Paciente registrado correctamente.");
+        } else if (e.getSource() == Nuevo) {
+            // Limpiar campos del formulario
+            txt_identificacion.setText("");
+            txt_nombres.setText("");
+            txt_apellidos.setText("");
+            txt_telefono.setText("");
+            txt_direccion.setText("");
+            Dtd_fecha_nacimiento.setCalendar(null);
+            rdb_masculino.setSelected(false);
+            rdb_femenino.setSelected(false);
+            rdb_otro.setSelected(false);
         }
 }
         

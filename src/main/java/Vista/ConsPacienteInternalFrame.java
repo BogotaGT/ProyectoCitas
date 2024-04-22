@@ -23,7 +23,7 @@ public class ConsPacienteInternalFrame extends javax.swing.JInternalFrame {
   // Crear el botón Buscar antes de asignarle un ActionListener
     Buscar = new javax.swing.JButton();
     // Asignar el botón Buscar al campo Buscar de la clase
-    this.Buscar = Buscar;
+   
     // Agregar ActionListener después de inicializar el botón
     Buscar.addActionListener(gestorpacienteControl);
        

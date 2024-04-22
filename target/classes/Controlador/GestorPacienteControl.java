@@ -15,83 +15,53 @@ import Modelo.GestorPaciente;
 import Modelo.Paciente;
 import Vista.ConsPacienteInternalFrame;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JButton;
 
 public class GestorPacienteControl implements ActionListener {
-    private GestorPaciente pacientesModelo;
+    private GestorPaciente gestorPaciente;
     private ConsPacienteInternalFrame consultarPacienteVista;
-    private Connection conn; // Se agrega el atributo para Connection
+    
 
     public GestorPacienteControl(ConsPacienteInternalFrame consultarPacienteVista) {
         this.consultarPacienteVista = consultarPacienteVista;
-        this.pacientesModelo = new GestorPaciente();
+        this.gestorPaciente = new GestorPaciente();
         this.conn = Recurso.Conexion.conector(); // Se inicializa la conexión
+        this.consultarPacienteVista.Buscar = new JButton();
+        this.consultarPacienteVista.Buscar.addActionListener(this);
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DefaultTableModel tmodelo;
-        String valor = consultarPacienteVista.txt_valor.getText();
-        int parametro = 0;
+        if (e.getSource() == consultarPacienteVista.Buscar) {
+            String parametro = "";
         if (consultarPacienteVista.rdb_identificacion.isSelected()) {
-            parametro = 1;
+            parametro = "pacIdentificacion";
         }
-        if (consultarPacienteVista.rdb_nombres.isSelected()) {
-            parametro = 2;
+        else if (consultarPacienteVista.rdb_nombres.isSelected()) {
+            parametro = "pacNombres";
         }
-        if (consultarPacienteVista.rdb_apellidos.isSelected()) {
-            parametro = 3;
+        else if (consultarPacienteVista.rdb_apellidos.isSelected()) {
+            parametro = "pacApellidos";
         }
         if (consultarPacienteVista.rdb_genero.isSelected()) {
-            parametro = 4;
+            parametro = "pacGenero";
         }
-        LinkedList<Paciente> pacientes = getPacientesByParametro(parametro, valor); // Llamada al método corregido
+       
+        String valor = consultarPacienteVista.txt_valor.getText();
 
-        String registro[] = new String[5];
-        String[] Titulos = { "Identificacion", "Nombre", "Apellidos", "Fecha Nacimiento", "Genero" };
-        tmodelo = new DefaultTableModel();
-        tmodelo.setColumnIdentifiers(Titulos);
-        for (Paciente p : pacientes) {
-            registro[0] = p.getIdentificacion();
-            registro[1] = p.getNombres();
-            registro[2] = p.getApellidos();
-            registro[3] = p.getFechaNacimiento();
-            registro[4] = p.getGenero();
-            tmodelo.addRow(registro);
+        LinkedList<Paciente> pacientes = gestorPaciente.getPacientesByParametro(parametro, valor);
+
+        DefaultTableModel modelo = (DefaultTableModel) consultarPacienteVista.Tbl_datos.getModel();
+        modelo.setRowCount(0); // Limpiar la tabla antes de llenarla
+        for (Paciente paciente : pacientes) {
+            Object[] fila = {paciente.getIdentificacion(), paciente.getNombres(), paciente.getApellidos(),
+                             paciente.getFechaNacimiento(), paciente.getGenero()};
+            modelo.addRow(fila);
         }
-        consultarPacienteVista.Tbl_datos.setModel(tmodelo);
     }
-    
-    // Método corregido para obtener pacientes por parámetro
-    private LinkedList<Paciente> getPacientesByParametro(int parametro, String valor) {
-        LinkedList<Paciente> resultado = new LinkedList<Paciente>();
-        String sql = "";
-        switch (parametro) {
-            case 1:
-                sql = "SELECT * FROM PACIENTE WHERE PACIDENTIFICACION='" + valor + "'";
-                break;
-            case 2:
-                sql = "SELECT * FROM PACIENTE WHERE PACNOMBRES='" + valor + "'";
-                break;
-            case 3:
-                sql = "SELECT * FROM PACIENTE WHERE PACAPELLIDOS='" + valor + "'";
-                break;
-            case 4:
-                sql = "SELECT * FROM PACIENTE WHERE PACGENERO='" + valor + "'";
-                break;
-        }
-        try {
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                resultado.add(new Paciente(rs.getString("PACIDENTIFICACION"), rs.getString("PACNOMBRES"),
-                        rs.getString("PACAPELLIDOS"), rs.getString("PACFECHANACIMIENTO"), rs.getString("PACGENERO"), telefono, direccion));
-            }
-            st.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-        return resultado;
+
     }
 }
-
+    
                 
