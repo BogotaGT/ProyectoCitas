@@ -4,38 +4,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField; // Se agregó la importación de JTextField
-import Modelo.GestorPaciente;
-import Modelo.Paciente;
+import Controlador.PacienteControl;
+
 
 
 public class RegPacienteInternalFrame extends javax.swing.JInternalFrame implements ActionListener {
 
-    GestorPaciente gestorPaciente;
-       public JTextField txt_telefono;
-       public JTextField txt_direccion;
-
+    PacienteControl pacienteControl;
+      
     public RegPacienteInternalFrame() {
         initComponents();
-        gestorPaciente = new GestorPaciente(); // Inicializar el gestor de pacientes
+        pacienteControl = new PacienteControl(this); // Inicializar el gestor de pacientes
+        Nuevo.addActionListener(this); 
         Registrar.addActionListener(this); // Agregar listener al botón Registrar
-        Nuevo.addActionListener(this);
-
-        txt_telefono = new JTextField();
-        txt_direccion = new JTextField();
-        
-       
+         
     }
 
     @Override
-           public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
         if (e.getSource() == Registrar) {
             // Obtener datos del formulario  
             String identificacion = txt_identificacion.getText();
             String nombres = txt_nombres.getText();
             String apellidos = txt_apellidos.getText();
-             String fechaNacimiento = ((JTextField) Dtd_fecha_nacimiento.getDateEditor().getUiComponent()).getText();
-            String telefono = txt_telefono.getText(); // Se corrigió el nombre del campo de teléfono
-            String direccion = txt_direccion.getText();
+            String fechaNacimiento = ((JTextField) Dtd_fecha_nacimiento.getDateEditor().getUiComponent()).getText();
             String genero = "";
             if (rdb_masculino.isSelected()) {
                 genero = "Masculino";
@@ -45,19 +37,16 @@ public class RegPacienteInternalFrame extends javax.swing.JInternalFrame impleme
                 genero = "Otro";
             }          
 
-            // Crear objeto Paciente
-            Paciente paciente = new Paciente(identificacion, nombres, apellidos, fechaNacimiento, genero, telefono, direccion);
-
             // Registrar paciente
-            gestorPaciente.registrarPaciente(paciente);
+            pacienteControl.getGestorPacienteModelo().registrarPaciente(identificacion, nombres, apellidos, fechaNacimiento, genero);
+
             JOptionPane.showMessageDialog(this, "Paciente registrado correctamente.");
-        } else if (e.getSource() == Nuevo) {
+        } 
+        else if (e.getSource() == Nuevo) {
             // Limpiar campos del formulario
             txt_identificacion.setText("");
             txt_nombres.setText("");
             txt_apellidos.setText("");
-            txt_telefono.setText("");
-            txt_direccion.setText("");
             Dtd_fecha_nacimiento.setCalendar(null);
             rdb_masculino.setSelected(false);
             rdb_femenino.setSelected(false);

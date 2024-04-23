@@ -3,13 +3,14 @@ package Vista;
 public class PrincipalJFrame extends javax.swing.JFrame {
     RegPacienteInternalFrame regPacienteInternalFrame;
     ConsPacienteInternalFrame consPacienteInternalFrame;
+
     public PrincipalJFrame() {
+        initComponents();
+        setExtendedState(MAXIMIZED_BOTH);
         regPacienteInternalFrame = new RegPacienteInternalFrame();
         consPacienteInternalFrame = new ConsPacienteInternalFrame();
         add(regPacienteInternalFrame);
         add(consPacienteInternalFrame);
-        initComponents();
-        setExtendedState(MAXIMIZED_BOTH);
     }
 
     /**

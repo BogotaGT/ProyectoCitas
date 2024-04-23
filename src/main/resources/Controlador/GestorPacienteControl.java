@@ -16,6 +16,7 @@ import Modelo.Paciente;
 import Vista.ConsPacienteInternalFrame;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
+import Modelo.Paciente;
 
 public class GestorPacienteControl implements ActionListener {
     private GestorPaciente gestorPaciente;

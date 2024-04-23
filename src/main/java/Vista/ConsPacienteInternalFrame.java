@@ -1,36 +1,50 @@
 package Vista;
 
-import javax.swing.JButton;
-import javax.swing.table.DefaultTableModel;
 
+import javax.swing.table.DefaultTableModel;
+import Modelo.GestorPaciente;
+import Modelo.Paciente;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 public class ConsPacienteInternalFrame extends javax.swing.JInternalFrame {
 
-   public Controlador.GestorPacienteControl gestorpacienteControl;
-   private DefaultTableModel tabla;
-   public JButton Buscar;
-   public javax.swing.JRadioButton rdb_fechaNacimiento;
-   public javax.swing.JRadioButton rdb_telefono;
-   public javax.swing.JRadioButton rdb_direccion;
-   
+    private final GestorPaciente gestorPaciente;
+    private final DefaultTableModel tabla;
+            
    public ConsPacienteInternalFrame(){
     initComponents();
-    gestorpacienteControl = new Controlador.GestorPacienteControl(this);
+    this.gestorPaciente = new GestorPaciente();
     String titulosTabla[] = {"Identificatión", "Nombres", "Apellidos", "Fecha Nacimiento", "Genero"};
     tabla = new DefaultTableModel(null, titulosTabla);
-    Tbl_datos.setModel(tabla);
-    btn_aceptar.addActionListener(gestorpacienteControl);
-  // Crear el botón Buscar antes de asignarle un ActionListener
-    Buscar = new javax.swing.JButton();
-    // Asignar el botón Buscar al campo Buscar de la clase
-   
-    // Agregar ActionListener después de inicializar el botón
-    Buscar.addActionListener(gestorpacienteControl);
-       
+    Tbl_datos.setModel(tabla);   
     }
 
     public DefaultTableModel getTableModel() {
         return tabla;
+    }
+
+    private void buscarPacientes() {
+        String parametro = "";
+        if (rdb_identificacion.isSelected()) {
+            parametro = "pacIdentificacion";
+        } else if (rdb_nombres.isSelected()) {
+            parametro = "pacNombres";
+        } else if (rdb_apellidos.isSelected()) {
+            parametro = "pacApellidos";
+        } else if (rdb_genero.isSelected()) {
+            parametro = "pacGenero";
+        }
+
+        String valor = jTextField1.getText();
+
+        LinkedList<Paciente> pacientes = gestorPaciente.getPacientesByParametro(parametro, valor);
+        tabla.setRowCount(0);
+        for (Paciente paciente : pacientes) {
+            Object[] fila = {paciente.getIdentificacion(), paciente.getNombres(), paciente.getApellidos(), paciente.getFechaNacimiento(), paciente.getGenero()};
+            tabla.addRow(fila);
+        }
     }
 
     /**
@@ -52,6 +66,13 @@ public class ConsPacienteInternalFrame extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         Tbl_datos = new javax.swing.JTable();
 
+        btn_aceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                buscarPacientes();
+            }
+        });
+
         rdb_identificacion.setText("Identificación");
         rdb_identificacion.setName(""); // NOI18N
 
@@ -59,7 +80,7 @@ public class ConsPacienteInternalFrame extends javax.swing.JInternalFrame {
 
         rdb_apellidos.setText("Apellidos");
 
-        rdb_genero.setText("Sexo");
+        rdb_genero.setText("Genero");
 
         txt_valor.setText("Valor a buscar:");
         txt_valor.setToolTipText("Valor a buscar:");

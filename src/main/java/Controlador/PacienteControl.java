@@ -4,10 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import Modelo.GestorPaciente;
 import Modelo.Paciente;
 import Vista.RegPacienteInternalFrame;
+import Recurso.Conexion;
 
 public class PacienteControl implements ActionListener {
     RegPacienteInternalFrame pacienteVista;
@@ -15,14 +15,20 @@ public class PacienteControl implements ActionListener {
     GestorPaciente gestorPacienteModelo;
     SimpleDateFormat formatoEntrada;
     SimpleDateFormat formatoSalida;
+    Conexion conexion;
 
     public PacienteControl(RegPacienteInternalFrame pacienteVista) {
         this.pacienteVista = pacienteVista;
+        this.conexion = new Conexion();
         this.gestorPacienteModelo = new GestorPaciente();
         this.pacienteVista.Registrar.addActionListener(this); // Agregar listener al botón "Registrar"
         this.pacienteVista.Nuevo.addActionListener(this);
         this.formatoEntrada = new SimpleDateFormat("dd-MM-yyyy");
         this.formatoSalida = new SimpleDateFormat("yyyy-MM-dd");
+    }
+
+    public GestorPaciente getGestorPacienteModelo() {
+        return gestorPacienteModelo;
     }
 
     @Override
@@ -71,11 +77,9 @@ public class PacienteControl implements ActionListener {
             genero = "O";
         }
         
-        String telefono = pacienteVista.txt_telefono.getText();
-        String direccion = pacienteVista.txt_direccion.getText();
-        
-        pacienteModelo = new Paciente(identificacion, nombres, apellidos, fecha_nacimiento, genero, telefono, direccion);
-        gestorPacienteModelo.registrarPaciente(pacienteModelo);
+                
+       // Llamar al método insertarPaciente de la clase Conexion
+       gestorPacienteModelo.registrarPaciente(identificacion, nombres, apellidos, fecha_nacimiento, genero);
     }
 }
 

@@ -3,14 +3,13 @@ package Controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-
 import Modelo.GestorPaciente;
 import Modelo.Paciente;
 import Vista.RegPacienteInternalFrame;
 
 public class PacienteControl implements ActionListener {
-    RegPacienteInternalFrame pacienteVista;
-    Paciente pacienteModelo;
+    private RegPacienteInternalFrame pacienteVista;
+    private Paciente pacienteModelo;
     GestorPaciente gestorPacienteModelo;
 
     public PacienteControl(RegPacienteInternalFrame pacienteVista) {
@@ -18,6 +17,9 @@ public class PacienteControl implements ActionListener {
         this.gestorPacienteModelo = new GestorPaciente();
         this.pacienteVista.Nuevo.addActionListener(this); // Agregar listener al botón "Nuevo"
         this.pacienteVista.Registrar.addActionListener(this); // Agregar listener al botón "Registrar"
+    }
+    public GestorPaciente getGestorPaciente() {
+        return gestorPacienteModelo;
     }
 
     @Override
@@ -55,8 +57,8 @@ public class PacienteControl implements ActionListener {
         } else if (pacienteVista.rdb_otro.isSelected()) {
             genero = "O";
         }
-        pacienteModelo = new Paciente(identificacion, nombres, apellidos, fecha_nacimiento, genero, telefono, direccion);
-        gestorPacienteModelo.RegistrarPacientes(pacienteModelo);
+        Paciente paciente = new Paciente(identificacion, nombres, apellidos, fecha_nacimiento, genero);
+        gestorPacienteModelo.registrarPaciente(paciente);
     }
 }
 

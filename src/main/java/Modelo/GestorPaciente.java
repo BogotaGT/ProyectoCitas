@@ -1,57 +1,79 @@
 package Modelo;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import javax.swing.JOptionPane;
-import Recurso.Conexion;
-
+import Recurso.Conexion; 
+ 
 public class GestorPaciente {
-    private Conexion conn;
+
+    private Conexion cx;
 
     public GestorPaciente() {
-        conn = new Conexion(); // Obtener la conexión desde la clase Conexion
+        cx = new Conexion();
     }
-
-    public void registrarPaciente(Paciente paciente) {
-    try {
-        String query = "INSERT INTO pacientes (pacIdentificacion, pacNombres, pacApellidos, pacFechaNacimiento, pacGenero) "
-                     + "VALUES (?, ?, ?, ?, ?)"; // Ajustado para incluir los 5 parámetros
-        PreparedStatement pst = conn.getConnection().prepareStatement(query);
-        pst.setString(1, paciente.getIdentificacion());
-        pst.setString(2, paciente.getNombres());
-        pst.setString(3, paciente.getApellidos());
-        pst.setString(4, paciente.getFechaNacimiento());
-        pst.setString(5, paciente.getGenero());
-        pst.executeUpdate();
-        JOptionPane.showMessageDialog(null, "Paciente Registrado");
-        pst.close();
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Error al registrar paciente: " + ex.getMessage());
-    }
-}
-
 
     public LinkedList<Paciente> getPacientesByParametro(String parametro, String valor) {
-        LinkedList<Paciente> resultado = new LinkedList<>();
-        String sql = "SELECT * FROM pacientes WHERE " + parametro + "=?";
+        LinkedList<Paciente> pacientes = new LinkedList<>();
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         try {
-            PreparedStatement pst = conn.getConnection().prepareStatement(sql); 
-            pst.setString(1, valor);
-            ResultSet rs = pst.executeQuery();
+            conn = cx.getConnection();
+            String sql = "SELECT * FROM pacientes WHERE " + parametro + " = ?";
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, valor);
+            rs = ps.executeQuery();
+
             while (rs.next()) {
-                resultado.add(new Paciente(rs.getString("pacIdentificacion"), rs.getString("pacNombres"),
-                        rs.getString("pacApellidos"), rs.getString("pacFechaNacimiento"),rs.getString("pacGenero"), rs.getString("pacTelefono"),
-                        rs.getString("pacDireccion")));
+                Paciente paciente = new Paciente(
+                    rs.getString("pacIdentificacion"), 
+                    rs.getString("pacNombres"), 
+                    rs.getString("pacApellidos"), 
+                    rs.getString("pacFechaNacimiento"), 
+                    rs.getString("pacGenero"));
+                    pacientes.add(paciente);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (rs != null) rs.close();
+                    if (ps != null) ps.close();
+                    if (conn != null) conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-            pst.close();
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            return pacientes;
         }
-        return resultado;
+
+        public void registrarPaciente(String identificacion, String nombres, String apellidos, String fechaNacimiento, String genero) {
+            Connection conn = null;
+            PreparedStatement ps = null;
+            try {
+                conn = cx.getConnection();
+                String sql = "INSERT INTO pacientes (pacIdentificacion, pacNombres, pacApellidos, pacFechaNacimiento, pacGenero) VALUES (?, ?, ?, ?, ?)";
+                ps = conn.prepareStatement(sql);
+                ps.setString(1, identificacion);
+                ps.setString(2, nombres);
+                ps.setString(3, apellidos);
+                ps.setString(4, fechaNacimiento);
+                ps.setString(5, genero);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (ps != null) ps.close();
+                    if (conn != null) conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
-}
-
-
-
+        
+    
