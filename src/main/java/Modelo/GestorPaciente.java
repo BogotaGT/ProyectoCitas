@@ -42,7 +42,7 @@ public class GestorPaciente {
                 try {
                     if (rs != null) rs.close();
                     if (ps != null) ps.close();
-                    if (conn != null) conn.close();
+                    cx.desconectar();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -68,7 +68,7 @@ public class GestorPaciente {
             } finally {
                 try {
                     if (ps != null) ps.close();
-                    if (conn != null) conn.close();
+                    cx.desconectar();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
