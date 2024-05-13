@@ -35,8 +35,10 @@ public class Conexion {
 
     public void desconectar() {
         try {
-            cx.close();
-            System.out.println("SE DESCONECTO DE BD " + bd);
+            if (cx != null && !cx.isClosed()) {
+                cx.close();
+                System.out.println("SE DESCONECTO DE BD " + bd);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }

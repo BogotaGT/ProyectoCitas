@@ -68,7 +68,6 @@ public class GestorPaciente {
             } finally {
                 try {
                     if (ps != null) ps.close();
-                    cx.desconectar();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
