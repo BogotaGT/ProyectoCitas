@@ -3,14 +3,20 @@ package Vista;
 public class PrincipalJFrame extends javax.swing.JFrame {
     RegPacienteInternalFrame regPacienteInternalFrame;
     ConsPacienteInternalFrame consPacienteInternalFrame;
+    AgendarCitaForm agendarCitaForm;
+    RegistrarMedicoForm registrarMedicoForm;
 
     public PrincipalJFrame() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
         regPacienteInternalFrame = new RegPacienteInternalFrame();
         consPacienteInternalFrame = new ConsPacienteInternalFrame();
+        agendarCitaForm = new AgendarCitaForm();
+        registrarMedicoForm = new RegistrarMedicoForm(); 
         add(regPacienteInternalFrame);
         add(consPacienteInternalFrame);
+        add(agendarCitaForm);
+        add(registrarMedicoForm);
     }
 
     /**
@@ -35,6 +41,8 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem(); 
+        jMenuItem5 = new javax.swing.JMenuItem(); 
 
         jMenu3.setText("File");
         jMenuBar2.add(jMenu3);
@@ -89,6 +97,22 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem3);
 
+        jMenuItem4.setText("AGENDAR CITA"); // Agregar texto
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4); // Agregar item al menú
+
+        jMenuItem5.setText("REGISTRAR MEDICO"); // Agregar texto
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5); // Agregar item al menú
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -126,6 +150,14 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         
         consPacienteInternalFrame.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) { // Nuevo método
+        agendarCitaForm.setVisible(true);
+    }
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) { // Nuevo método
+        registrarMedicoForm.setVisible(true);
+    }
 
     /**
      * @param args the command line arguments
@@ -183,5 +215,8 @@ new PrincipalJFrame().setVisible(true);
     private javax.swing.JMenuItem jMenuItem1;
     public javax.swing.JMenuItem jMenuItem2;
     public javax.swing.JMenuItem jMenuItem3;
+    public javax.swing.JMenuItem jMenuItem4;
+    public javax.swing.JMenuItem jMenuItem5;
+
     // End of variables declaration//GEN-END:variables
 }
