@@ -1,5 +1,7 @@
 package Vista;
 
+import javax.swing.JInternalFrame;
+
 public class PrincipalJFrame extends javax.swing.JFrame {
     RegPacienteInternalFrame regPacienteInternalFrame;
     ConsPacienteInternalFrame consPacienteInternalFrame;
@@ -10,16 +12,24 @@ public class PrincipalJFrame extends javax.swing.JFrame {
     public PrincipalJFrame() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
+
+        //instancias de los formularios
         regPacienteInternalFrame = new RegPacienteInternalFrame();
         consPacienteInternalFrame = new ConsPacienteInternalFrame();
         agendarCitaForm = new AgendarCitaForm();
         registrarMedicoForm = new RegistrarMedicoForm(); 
         consCitasInternalFrame = new ConsCitasInternalFrame();
+
+        //Se agregan los formularios al JFrame principal
         add(regPacienteInternalFrame);
         add(consPacienteInternalFrame);
         add(agendarCitaForm);
         add(registrarMedicoForm);
         add(consCitasInternalFrame);
+
+        //cierre de los formularios
+        regPacienteInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
+        consPacienteInternalFrame.setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
     }
 
     /**

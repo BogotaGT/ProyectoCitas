@@ -1,5 +1,6 @@
 package Vista;
 
+import javax.swing.JInternalFrame;
 import javax.swing.table.DefaultTableModel;
 import Modelo.GestorPaciente;
 import Modelo.Paciente;
@@ -17,7 +18,9 @@ public class ConsPacienteInternalFrame extends javax.swing.JInternalFrame {
     this.gestorPaciente = new GestorPaciente();
     String titulosTabla[] = {"Identificatión", "Nombres", "Apellidos", "Fecha Nacimiento", "Genero"};
     tabla = new DefaultTableModel(null, titulosTabla);
-    Tbl_datos.setModel(tabla);   
+    Tbl_datos.setModel(tabla); 
+    
+    setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
     }
 
     public DefaultTableModel getTableModel() {

@@ -16,9 +16,9 @@ public class RegPacienteInternalFrame extends javax.swing.JInternalFrame impleme
         initComponents();
         pacienteControl = new PacienteControl(this); // Inicializar el gestor de pacientes
         Nuevo.addActionListener(this); 
-        Registrar.addActionListener(this); // Agregar listener al botón Registrar
-         
+        Registrar.addActionListener(this); 
     }
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
