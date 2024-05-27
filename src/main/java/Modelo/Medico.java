@@ -26,3 +26,5 @@ public class Medico {
         this.especialidad = especialidad;
     }
 }
+
+

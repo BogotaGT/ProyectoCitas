@@ -3,50 +3,25 @@ package Vista;
 import javax.swing.table.DefaultTableModel;
 import Modelo.GestorPaciente;
 import Modelo.Paciente;
-import Modelo.Cita;
-import Modelo.Medico;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-
 public class ConsPacienteInternalFrame extends javax.swing.JInternalFrame {
 
     private final GestorPaciente gestorPaciente;
-    private final DefaultTableModel tablaP, tablaC, tablaM;
-    private JTabbedPane tabbedPane;
-    private JTable tablePacientes, tableCitas, tableMedicos;
+    private final DefaultTableModel tabla;
             
-public ConsPacienteInternalFrame(){
+   public ConsPacienteInternalFrame(){
     initComponents();
     this.gestorPaciente = new GestorPaciente();
+    String titulosTabla[] = {"Identificatión", "Nombres", "Apellidos", "Fecha Nacimiento", "Genero"};
+    tabla = new DefaultTableModel(null, titulosTabla);
+    Tbl_datos.setModel(tabla);   
+    }
 
-    String titulosTablaP[] = {"Identificatión", "Nombres", "Apellidos", "Fecha Nacimiento", "Genero"};
-    tablaP = new DefaultTableModel(null, titulosTablaP);
-    tablePacientes = new JTable(tablaP);
-
-    String titulosTablaC[] = {"Fecha", "Hora", "Paciente", "Medico"};
-    tablaC = new DefaultTableModel(null, titulosTablaC);
-    tableCitas = new JTable(tablaC);
-    
-    String titulosTablaM[] = {"Nombre", "Especialidad"};
-    tablaM = new DefaultTableModel(null, titulosTablaM);
-    tableMedicos = new JTable(tablaM);
-
-    tabbedPane = new JTabbedPane();
-    tabbedPane.addTab("Pacientes", new JScrollPane(tablePacientes));
-    tabbedPane.addTab("Citas", new JScrollPane(tableCitas));
-    tabbedPane.addTab("Médicos", new JScrollPane(tableMedicos));
-    getContentPane().add(tabbedPane);
-
-    //Cargar los datos iniciales en las tablas
-    buscarPacientes();
-    buscarCitas();
-    buscarMedicos();
+    public DefaultTableModel getTableModel() {
+        return tabla;
     }
 
     private void buscarPacientes() {
@@ -61,45 +36,15 @@ public ConsPacienteInternalFrame(){
             parametro = "pacGenero";
         }
 
-        // Verificar si se ha seleccionado un parámetro de búsqueda
-        if (!parametro.isEmpty()) {
-            String valor = jTextField1.getText();
-            LinkedList<Paciente> pacientes = gestorPaciente.getPacientesByParametro(parametro, valor);
-            tablaP.setRowCount(0);
-            for (Paciente paciente : pacientes) {
-                Object[] fila = {
-                    paciente.getIdentificacion(),
-                    paciente.getNombres(),
-                    paciente.getApellidos(),
-                    paciente.getFechaNacimiento(),
-                    paciente.getGenero()
-                };
-                tablaP.addRow(fila);
-            }
-        } else {
-            // Mostrar un mensaje de error si no se ha seleccionado ningún parámetro
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un parámetro de búsqueda", "Error", JOptionPane.ERROR_MESSAGE);
+        String valor = jTextField1.getText();
+
+        LinkedList<Paciente> pacientes = gestorPaciente.getPacientesByParametro(parametro, valor);
+        tabla.setRowCount(0);
+        for (Paciente paciente : pacientes) {
+            Object[] fila = {paciente.getIdentificacion(), paciente.getNombres(), paciente.getApellidos(), paciente.getFechaNacimiento(), paciente.getGenero()};
+            tabla.addRow(fila);
         }
     }
-
-        private void buscarCitas() {
-            LinkedList<Cita> citas = gestorPaciente.obtenerCitas();
-            tablaC.setRowCount(0);
-            for (Cita cita : citas) {
-                Object[] fila = {cita.getFecha(), cita.getHora(), cita.getPaciente(), cita.getMedico()};
-                tablaC.addRow(fila);
-            }
-        }
-
-       private void buscarMedicos() {
-        LinkedList<Medico> medicos = gestorPaciente.obtenerMedicos();
-        tablaM.setRowCount(0);
-        for (Medico medico : medicos) {
-            Object[] fila = {medico.getNombre(), medico.getEspecialidad()};
-            tablaM.addRow(fila);
-        }
-    }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -117,8 +62,6 @@ public ConsPacienteInternalFrame(){
         txt_valor = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         btn_aceptar = new javax.swing.JButton();
-        btn_consultarCitas = new javax.swing.JButton(); 
-        btn_consultarMedicos = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         Tbl_datos = new javax.swing.JTable();
 
@@ -126,22 +69,6 @@ public ConsPacienteInternalFrame(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 buscarPacientes();
-            }
-        });
-
-        btn_consultarCitas.setText("Consultar Citas"); // Texto del nuevo botón
-        btn_consultarCitas.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buscarCitas();
-            }
-        });
-
-        btn_consultarMedicos.setText("Consultar Médicos"); // Texto del nuevo botón
-        btn_consultarMedicos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                buscarMedicos();
             }
         });
 
@@ -197,11 +124,7 @@ public ConsPacienteInternalFrame(){
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_aceptar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_consultarCitas) // Añadir botón de consultar citas
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btn_consultarMedicos)))
+                        .addComponent(btn_aceptar)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(16, Short.MAX_VALUE)
@@ -221,9 +144,7 @@ public ConsPacienteInternalFrame(){
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_valor)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_aceptar)
-                    .addComponent(btn_consultarCitas) // Añadir botón de consultar citas
-                    .addComponent(btn_consultarMedicos))
+                    .addComponent(btn_aceptar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -243,13 +164,10 @@ public ConsPacienteInternalFrame(){
     public javax.swing.JRadioButton rdb_identificacion;
     public javax.swing.JRadioButton rdb_nombres;
     public javax.swing.JLabel txt_valor;
-    public javax.swing.JButton btn_consultarCitas; 
-    public javax.swing.JButton btn_consultarMedicos;
     // End of variables declaration//GEN-END:variables
 
    
         }
     
-
 
 

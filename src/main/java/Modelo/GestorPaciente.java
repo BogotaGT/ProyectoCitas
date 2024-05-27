@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+
+import javax.swing.JOptionPane;
+
 import Recurso.Conexion; 
  
 public class GestorPaciente {
@@ -14,9 +17,27 @@ public class GestorPaciente {
         cx = new Conexion();
     }
 
+
     public LinkedList<Paciente> getPacientesByParametro(String parametro, String valor) {
         LinkedList<Paciente> pacientes = new LinkedList<>();
-        String sql = "SELECT * FROM pacientes WHERE " + parametro + " = ?";
+        String sql = "";
+        switch (parametro) {
+            case "pacIdentificacion":
+                sql = "SELECT * FROM pacientes WHERE pacIdentificacion = ?";
+                break;
+            case "pacNombres":
+                sql = "SELECT * FROM pacientes WHERE pacNombres = ?";
+                break;
+            case "pacApellidos":
+                sql = "SELECT * FROM pacientes WHERE pacApellidos = ?";
+                break;
+            case "pacGenero":
+                sql = "SELECT * FROM pacientes WHERE pacGenero = ?";
+                break;
+            default:
+                // Manejo de parámetro inválido
+                return pacientes;
+        }
 
     try (Connection conn = cx.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -38,6 +59,30 @@ public class GestorPaciente {
             } 
             return pacientes;
         }
+
+         // Método para obtener las citas agendadas
+    public LinkedList<Cita> obtenerCitas() {
+        LinkedList<Cita> citas = new LinkedList<>();
+        String sql = "SELECT id, fecha, hora, paciente, medico FROM citas";
+        try (Connection conn = cx.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Cita cita = new Cita(
+                    rs.getInt("id"), // Agregado
+                    rs.getString("fecha"),
+                    rs.getString("hora"),
+                    rs.getString("paciente"),
+                    rs.getString("medico")
+                );
+                citas.add(cita);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return citas;
+    }
 
         public void registrarPaciente(String identificacion, String nombres, String apellidos, String fechaNacimiento, String genero) {
             String checkSql = "SELECT COUNT(*) FROM pacientes WHERE pacIdentificacion = ?";
@@ -68,15 +113,22 @@ public class GestorPaciente {
             }
         }
 
-         // Nuevo método para obtener las citas agendadas
-    public LinkedList<Cita> obtenerCitas() {
-        return cx.obtenerCitas();
-    }
 
     // Nuevo método para guardar una cita
     public void guardarCita(String fecha, String hora, String paciente, String medico) {
-        cx.insertarCita(fecha, hora, paciente, medico);
+        String sql = "INSERT INTO citas (fecha, hora, paciente, medico) VALUES (?, ?, ?, ?)";
+    try (Connection conn = cx.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, fecha);
+        ps.setString(2, hora);
+        ps.setString(3, paciente);
+        ps.setString(4, medico);
+        ps.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Cita registrada correctamente.");
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error al registrar cita: " + ex.getMessage());
     }
+}
 
     // Nuevo método para obtener los médicos registrados
     public LinkedList<Medico> obtenerMedicos() {

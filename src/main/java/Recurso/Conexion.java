@@ -53,7 +53,7 @@ public class Conexion {
     
         //Metodos adicionales
     public void insertarPaciente(String identificacion, String nombres, String apellidos, String fechaNacimiento, String genero) {
-        String sql = "INSERT INTO pacientes (identificacion, nombres, apellidos, fecha_nacimiento, genero) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO pacientes (pacIdentificacion, pacNombres, pacApellidos, pacFechaNacimiento, pacGenero) VALUES (?, ?, ?, ?, ?)";
        try (Connection conn = getConnection();
            PreparedStatement statement = conn.prepareStatement(sql)) {
            statement.setString(1, identificacion);
@@ -71,16 +71,17 @@ public class Conexion {
     // Método para obtener las citas agendadas desde la base de datos
     public LinkedList<Cita> obtenerCitas() {
         LinkedList<Cita> citas = new LinkedList<>();
-        String sql = "SELECT fecha, hora, paciente, medico FROM citas";
+        String sql = "SELECT id, fecha, hora, paciente, medico FROM citas";
         try  (Connection conn = getConnection();
             PreparedStatement statement = conn.prepareStatement(sql);
             ResultSet resultSet = statement.executeQuery()){
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String fecha = resultSet.getString("fecha");
                 String hora = resultSet.getString("hora");
                 String paciente = resultSet.getString("paciente");
                 String medico = resultSet.getString("medico");
-                Cita cita = new Cita(fecha, hora, paciente, medico);
+                Cita cita = new Cita(id, fecha, hora, paciente, medico);
                 citas.add(cita);
             }
         } catch (SQLException ex) {

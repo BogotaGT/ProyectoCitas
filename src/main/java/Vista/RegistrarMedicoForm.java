@@ -59,3 +59,4 @@ public class RegistrarMedicoForm extends JInternalFrame implements ActionListene
         return btnRegistrar;
     }
 }
+

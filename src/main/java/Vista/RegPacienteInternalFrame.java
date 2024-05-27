@@ -197,3 +197,5 @@ public class RegPacienteInternalFrame extends javax.swing.JInternalFrame impleme
     public javax.swing.JTextField txt_nombres;
     // End of variables declaration//GEN-END:variables
 }
+
+

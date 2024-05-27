@@ -1,12 +1,14 @@
 package Modelo;
 
 public class Cita {
+    private int id;
     private String fecha;
     private String hora;
     private String paciente;
     private String medico;
 
-    public Cita(String fecha, String hora, String paciente, String medico) {
+    public Cita(int id, String fecha, String hora, String paciente, String medico) {
+        this.id = id;
         this.fecha = fecha;
         this.hora = hora;
         this.paciente = paciente;
@@ -14,6 +16,10 @@ public class Cita {
     }
 
     // Getters y setters
+    public int getId() { // Agregado
+        return id;
+    }
+
     public String getFecha() {
         return fecha;
     }
@@ -46,3 +52,4 @@ public class Cita {
         this.medico = medico;
     }
 }
+

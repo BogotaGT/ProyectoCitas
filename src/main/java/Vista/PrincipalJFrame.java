@@ -5,6 +5,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
     ConsPacienteInternalFrame consPacienteInternalFrame;
     AgendarCitaForm agendarCitaForm;
     RegistrarMedicoForm registrarMedicoForm;
+    ConsCitasInternalFrame consCitasInternalFrame;
 
     public PrincipalJFrame() {
         initComponents();
@@ -13,10 +14,12 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         consPacienteInternalFrame = new ConsPacienteInternalFrame();
         agendarCitaForm = new AgendarCitaForm();
         registrarMedicoForm = new RegistrarMedicoForm(); 
+        consCitasInternalFrame = new ConsCitasInternalFrame();
         add(regPacienteInternalFrame);
         add(consPacienteInternalFrame);
         add(agendarCitaForm);
         add(registrarMedicoForm);
+        add(consCitasInternalFrame);
     }
 
     /**
@@ -43,6 +46,7 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem(); 
         jMenuItem5 = new javax.swing.JMenuItem(); 
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         jMenu3.setText("File");
         jMenuBar2.add(jMenu3);
@@ -113,6 +117,14 @@ public class PrincipalJFrame extends javax.swing.JFrame {
         });
         jMenu2.add(jMenuItem5); // Agregar item al menú
 
+        jMenuItem6.setText("CONSULTAR CITAS"); 
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem6);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -157,6 +169,10 @@ public class PrincipalJFrame extends javax.swing.JFrame {
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) { // Nuevo método
         registrarMedicoForm.setVisible(true);
+    }
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {
+        consCitasInternalFrame.setVisible(true);
     }
 
     /**
@@ -217,6 +233,7 @@ new PrincipalJFrame().setVisible(true);
     public javax.swing.JMenuItem jMenuItem3;
     public javax.swing.JMenuItem jMenuItem4;
     public javax.swing.JMenuItem jMenuItem5;
+    public javax.swing.JMenuItem jMenuItem6;
 
     // End of variables declaration//GEN-END:variables
 }
