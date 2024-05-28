@@ -18,6 +18,7 @@ public class ConsCitasInternalFrame extends javax.swing.JInternalFrame {
         String titulosTabla[] = {"ID", "Fecha", "Hora", "Paciente", "Medico"};
         tabla = new DefaultTableModel(null, titulosTabla);
         Tbl_datos.setModel(tabla);
+        setTitle("CONSULTAR CITAS");
     }
 
     private void buscarCitas() {

@@ -17,7 +17,7 @@ public class AgendarCitaForm extends JInternalFrame implements ActionListener {
     }
 
     private void initComponents() {
-        setTitle("Agendar Cita");
+        setTitle("AGENDAR CITA");
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);

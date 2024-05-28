@@ -17,6 +17,11 @@ public class RegPacienteInternalFrame extends javax.swing.JInternalFrame impleme
         pacienteControl = new PacienteControl(this); // Inicializar el gestor de pacientes
         Nuevo.addActionListener(this); 
         Registrar.addActionListener(this); 
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
     }
     
 

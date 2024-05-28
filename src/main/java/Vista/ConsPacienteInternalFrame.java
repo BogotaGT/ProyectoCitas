@@ -19,6 +19,13 @@ public class ConsPacienteInternalFrame extends javax.swing.JInternalFrame {
     String titulosTabla[] = {"Identificatión", "Nombres", "Apellidos", "Fecha Nacimiento", "Genero"};
     tabla = new DefaultTableModel(null, titulosTabla);
     Tbl_datos.setModel(tabla); 
+
+    setTitle("CONSULTA DE PACIENTES");
+
+    setClosable(true);
+    setIconifiable(true);
+    setMaximizable(true);
+    setResizable(true);
     
     setDefaultCloseOperation(JInternalFrame.DISPOSE_ON_CLOSE);
     }

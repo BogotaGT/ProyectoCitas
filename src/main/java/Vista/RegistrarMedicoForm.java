@@ -17,7 +17,7 @@ public class RegistrarMedicoForm extends JInternalFrame implements ActionListene
     }
 
     private void initComponents() {
-        setTitle("Registrar Médico");
+        setTitle("REGISTRAR MEDICO");
         setClosable(true);
         setIconifiable(true);
         setMaximizable(true);
